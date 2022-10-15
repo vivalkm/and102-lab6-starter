@@ -10,13 +10,12 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.codepath.articlesearch.BuildConfig
+import com.codepath.articlesearch.R.layout
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.codepath.articlesearch.R.layout
 import okhttp3.Headers
 import org.json.JSONObject
 
@@ -24,6 +23,7 @@ import org.json.JSONObject
 // CHANGE THIS TO BE YOUR API KEY  //
 // --------------------------------//
 private const val API_KEY = BuildConfig.API_KEY
+
 /*
  * The class for the only fragment in the app, which contains the progress bar,
  * recyclerView, and performs the network calls to the NY Times API.
@@ -62,8 +62,7 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
         client[
                 "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json",
                 params,
-                object : JsonHttpResponseHandler()
-                {
+                object : JsonHttpResponseHandler() {
                     /*
                      * The onSuccess function gets called when
                      * HTTP response status is "200 OK"
@@ -76,12 +75,14 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
                         // The wait for a response is over
                         progressBar.hide()
 
-                        val resultsJSON : JSONObject = json.jsonObject.get("results") as JSONObject
-                        val booksRawJSON : String = resultsJSON.get("books").toString()
+                        val resultsJSON: JSONObject = json.jsonObject.get("results") as JSONObject
+                        val booksRawJSON: String = resultsJSON.get("books").toString()
                         val gson = Gson()
                         val arrayTutorialType = object : TypeToken<List<BestSellerBook>>() {}.type
-                        val models : List<BestSellerBook> = gson.fromJson(booksRawJSON, arrayTutorialType)
-                        recyclerView.adapter = BestSellerBooksRecyclerViewAdapter(models, this@BestSellerBooksFragment)
+                        val models: List<BestSellerBook> =
+                            gson.fromJson(booksRawJSON, arrayTutorialType)
+                        recyclerView.adapter =
+                            BestSellerBooksRecyclerViewAdapter(models, this@BestSellerBooksFragment)
 
                         // Look for this in Logcat:
                         Log.d("BestSellerBooksFragment", "response successful")
